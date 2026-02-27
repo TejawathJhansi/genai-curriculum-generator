@@ -1,6 +1,11 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
 import requests
 import json
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib import colors
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -48,10 +53,43 @@ each course with: name, code, credits, topics (list of 4 topics)."""
             return jsonify({"success": False, "error": "AI response error"})
     return jsonify({"success": False, "error": "Could not connect to AI"})
 
+@app.route('/api/download-pdf', methods=['POST'])
+def download_pdf():
+    curriculum = request.json.get('curriculum', {})
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    story = []
+
+    skill = curriculum.get('skill', 'Course')
+    story.append(Paragraph(f"{skill} Learning Plan", styles['Title']))
+    story.append(Spacer(1, 12))
+
+    for sem in curriculum.get('semesters', []):
+        story.append(Paragraph(f"Semester {sem['semester_number']}", styles['Heading1']))
+        for course in sem.get('courses', []):
+            story.append(Paragraph(course['name'], styles['Heading2']))
+            topics = ', '.join(course.get('topics', []))
+            story.append(Paragraph(f"Topics: {topics}", styles['Normal']))
+            story.append(Spacer(1, 8))
+
+    doc.build(story)
+    buffer.seek(0)
+    return send_file(buffer, as_attachment=True,
+                     download_name=f"{skill}-curriculum.pdf",
+                     mimetype='application/pdf')
+
+@app.route('/api/download-json', methods=['POST'])
+def download_json():
+    curriculum = request.json.get('curriculum', {})
+    buffer = BytesIO(json.dumps(curriculum, indent=2).encode())
+    return send_file(buffer, as_attachment=True,
+                     download_name='curriculum.json',
+                     mimetype='application/json')
+
 @app.route('/health')
 def health():
     return jsonify({"status": "healthy"})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-    
