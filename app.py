@@ -1,3 +1,8 @@
+
+from flask import Flask, render_template, request, jsonify
+import requests
+import json
+
 from flask import Flask, render_template, request, jsonify, send_file
 import requests
 import json
@@ -6,6 +11,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib import colors
 from io import BytesIO
+
 
 app = Flask(__name__)
 
@@ -53,6 +59,7 @@ each course with: name, code, credits, topics (list of 4 topics)."""
             return jsonify({"success": False, "error": "AI response error"})
     return jsonify({"success": False, "error": "Could not connect to AI"})
 
+
 @app.route('/api/download-pdf', methods=['POST'])
 def download_pdf():
     curriculum = request.json.get('curriculum', {})
@@ -93,3 +100,7 @@ def health():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+    
+# main app 
+
