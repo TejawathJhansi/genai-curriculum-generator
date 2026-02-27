@@ -1,0 +1,90 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #1B4F91, #8E44AD);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+}
+
+h1 {
+  color: #1B4F91;
+  font-size: 2em;
+  margin-bottom: 8px;
+}
+
+p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.form-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+input, select {
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+}
+
+input:focus, select:focus {
+  border-color: #1B4F91;
+  outline: none;
+}
+
+button {
+  padding: 14px;
+  background: #1B4F91;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #154078;
+}
+
+.semester {
+  border: 2px solid #eee;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+}
+
+.semester h2 {
+  color: #8E44AD;
+  margin-bottom: 12px;
+}
+
+.course {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px 0;
+}
+
+.course h3 {
+  color: #1B4F91;
+  margin-bottom: 8px;
+}
+
+.
